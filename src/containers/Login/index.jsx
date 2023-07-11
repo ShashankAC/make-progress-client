@@ -13,6 +13,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
 import Logo from '../../assets/Logo.jpg';
 import { LOGIN_USER } from './queries';
+import { userData } from '../../utils/cacheStore';
+
 
 function Login() {
 
@@ -40,8 +42,11 @@ function Login() {
   }
 
   useEffect(() => {
-    if (data && !loading) {
-      navigate('/home');
+    if (data && !loading && !error) {
+      if (data?.login?.userId) {
+        userData({ name: data?.login?.name, userId: data?.login?.userId, email: data?.login?.email });
+        navigate('/home');
+      }
     } else if (error && !loading) {
       setEmailOrUserNameError(error.message);
     }
@@ -50,7 +55,13 @@ function Login() {
   const handleLogin = async(e) => {
     e.preventDefault();
     try {
-      login();
+      if (emailOrUserName && password) {
+        login();
+      } else if(!emailOrUserName) {
+        setEmailOrUserNameError('Please enter email or username');
+      } else if(!password) {
+        setPasswordError('Please enter password');
+      }
     }
     catch(error) {
       setEmailOrUserNameError(error.message);
@@ -104,40 +115,38 @@ function Login() {
                 justifyContent="center"
                 alignItems="center"
               >
-                <form method='POST'>
-                  <TextField
-                    fullWidth
-                    required
-                    error={emailOrUserNameError}
-                    name="emailOrUserName"
-                    label="Email or Username"
-                    value={emailOrUserName}
-                    helperText={emailOrUserNameError ? 'Email or Username not found': ''}
-                    type='text'
-                    onChange={handleChange}
-                    onBlur={handleChange}
-                  />
-                  <TextField
-                    fullWidth
-                    required
-                    error={passwordError}
-                    name="password"
-                    label="Password"
-                    value={password}
-                    helperText={passwordError ? 'Please enter a password': ''}
-                    type='password'
-                    onChange={handleChange}
-                  />
-                  <Box display="block">
-                    <Button onClick={handleLogin}>
-                      Login
+                <TextField
+                  fullWidth
+                  required
+                  error={emailOrUserNameError}
+                  name="emailOrUserName"
+                  label="Email or Username"
+                  value={emailOrUserName}
+                  helperText={emailOrUserNameError}
+                  type='text'
+                  onChange={handleChange}
+                  onBlur={handleChange}
+                />
+                <TextField
+                  fullWidth
+                  required
+                  error={passwordError}
+                  name="password"
+                  label="Password"
+                  value={password}
+                  helperText={passwordError}
+                  type='password'
+                  onChange={handleChange}
+                />
+                <Box display="block">
+                  <Button onClick={handleLogin}>
+                    Login
+                  </Button>
+                  <Typography>Don't have an account ? Sign up now</Typography>
+                    <Button onClick={handleSignUp}>
+                      Sign up  
                     </Button>
-                    <Typography>Don't have an account ? Sign up now</Typography>
-                      <Button onClick={handleSignUp}>
-                        Sign up  
-                      </Button>
-                  </Box>
-                </form>
+                </Box>
               </Box>
             </CardContent>
           </Card>

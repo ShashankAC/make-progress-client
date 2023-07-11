@@ -5,6 +5,8 @@ import Login from './containers/Login';
 import SignUp from './containers/SignUp';
 import Home from './containers/Home';
 import NotFound from './containers/NotFound';
+import { userData } from './utils/cacheStore';
+import { useReactiveVar } from "@apollo/client";
 
 function NewUserRoutes() {
   
@@ -13,7 +15,6 @@ function NewUserRoutes() {
       <Routes>
         <Route path='/' element={ <SignUp /> } />
         <Route path='/login' element={ <Login /> } />
-        <Route path='/home' element={ <Home /> } />
         <Route path='*' element={ <NotFound /> } />
       </Routes>
     </div>
@@ -21,7 +22,6 @@ function NewUserRoutes() {
 }
 
 function AuthRoutes() {
-
   return (
     <div>
       <Header />
@@ -35,12 +35,11 @@ function AuthRoutes() {
 }
 
 function App() {
-  const authState = sessionStorage.getItem("isLoggedIn") === true;
-  
+  const authState = useReactiveVar(userData);
   return (
     <>
-      {authState && AuthRoutes()}
-      {!authState && NewUserRoutes()}
+      {authState?.userId && AuthRoutes()}
+      {!authState?.userId && NewUserRoutes()}
     </>
   )
 }

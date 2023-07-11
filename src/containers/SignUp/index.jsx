@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Logo from '../../assets/Logo.jpg';
 import Box from '@mui/material/Box';
-import { containsNumbers, isValidEmail } from '../../helpers/regex';
+import { containsNumbers, isValidEmail } from '../../utils/regex';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -29,13 +29,11 @@ function SignUp() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      console.log('data >>>', name, email, password);
       const response = await createUser(
         { variables: { name: name, email: email, password: password }}
       );
       // Access the success response and token from the Apollo Client data object
       // const { token } = response;
-      console.log('response >>>', response);
       // Store the token in localStorage or as a cookie
       // localStorage.setItem('token', token);
       if(!response.errors && data) {
@@ -61,28 +59,28 @@ function SignUp() {
         setName(value);
         if (containsNumbers(value)) {
           setNameError(true);
-        } else if (value.length > 0) {
-          setNameError(false);
+        } else if (value.length === 0) {
+          setNameError('Please enter a name');
         } else {
-          setNameError(true);
+          setNameError('');
         }
         break;
       case 'email':
         setEmail(value);
         if (value.length === 0) {
-          setEmailError(true);
+          setEmailError('Please enter an email address');
         } else if (!isValidEmail(value)) {
-          setEmailError(true);
+          setEmailError('Please enter a valid email');
         } else {
-          setEmailError(false);
+          setEmailError('');
         }
         break;
       case 'password':
         setPassword(value);
         if (value.length === 0) {
-          setPasswordError(true);
+          setPasswordError('Please enter a password');
         } else {
-          setPasswordError(false);
+          setPasswordError('');
         }
         break;
       default:
@@ -130,58 +128,56 @@ function SignUp() {
               justifyContent="center"
               alignItems="center"
             >
-              <form method='POST'>
-                <TextField
-                  fullWidth
-                  required
-                  error={nameError}
-                  name="name"
-                  label="Name"
-                  value={name}
-                  helperText={nameError ? 'Please enter a valid name.': ''}
-                  type='text'
-                  onChange={handleChange}
-                />
-                <TextField
-                  fullWidth
-                  required
-                  error={emailError}
-                  name="email"
-                  label="Email"
-                  value={email}
-                  helperText={emailError ? 'Please enter a valid email': ''}
-                  type='email'
-                  onChange={handleChange}
-                  onBlur={handleChange}
-                />
-                <TextField
-                  fullWidth
-                  required
-                  error={passwordError}
-                  name="password"
-                  label="Password"
-                  value={password}
-                  helperText={passwordError ? 'Please enter a password': ''}
-                  type='password'
-                  onChange={handleChange}
-                />
-                <Box
-                  display="block"
+              <TextField
+                fullWidth
+                required
+                error={nameError}
+                name="name"
+                label="Name"
+                value={name}
+                helperText={nameError}
+                type='text'
+                onChange={handleChange}
+              />
+              <TextField
+                fullWidth
+                required
+                error={emailError}
+                name="email"
+                label="Email"
+                value={email}
+                helperText={emailError}
+                type='email'
+                onChange={handleChange}
+                onBlur={handleChange}
+              />
+              <TextField
+                fullWidth
+                required
+                error={passwordError}
+                name="password"
+                label="Password"
+                value={password}
+                helperText={passwordError}
+                type='password'
+                onChange={handleChange}
+              />
+              <Box
+                display="block"
+              >
+                <Button
+                  type='submit'
+                  onClick={handleSubmit}
                 >
-                  <Button
-                    type='submit'
-                    onClick={handleSubmit}
-                  >
-                    Sign up
-                  </Button>
-                  <Typography>Already have an account ?</Typography>
-                  <Button
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </Button>
-                </Box>
-              </form>
+                  Sign up
+                </Button>
+                <Typography>Already have an account ?</Typography>
+                <Button
+                  onClick={handleLogin}
+                >
+                  Login
+                </Button>
+              </Box>
             </Box>
           </CardContent>
         </Card>

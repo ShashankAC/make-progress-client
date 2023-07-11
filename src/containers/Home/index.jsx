@@ -1,9 +1,15 @@
-import ResponsiveAppBar from "../../components/AppBar/AppBar";
+import { Box } from "@mui/material";
+import Goal from "../../components/Goal";
+
 function Home() {
   return (
-    <div>
-      <ResponsiveAppBar />
-    </div>
+      <Box>
+        <Goal
+          title="First goal"
+          createdDate="start date"
+        >
+        </Goal>
+      </Box>
   )
 }
 
