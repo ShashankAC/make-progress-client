@@ -4,9 +4,10 @@ import Header from './components/Header/Header';
 import Login from './containers/Login';
 import SignUp from './containers/SignUp';
 import Home from './containers/Home';
+import GoalDetails from './components/GoalDetails';
 import NotFound from './containers/NotFound';
-import { userData } from './utils/cacheStore';
-import { useReactiveVar } from "@apollo/client";
+import { ApolloConsumer, useQuery } from "@apollo/client";
+import { IS_LOGGED_IN } from './containers/Login/queries';
 
 function NewUserRoutes() {
   
@@ -14,7 +15,7 @@ function NewUserRoutes() {
     <div className="App">
       <Routes>
         <Route path='/' element={ <SignUp /> } />
-        <Route path='/login' element={ <Login /> } />
+        <Route path='/login' element={ <ApolloConsumer>{client => <Login client={client} />}</ApolloConsumer> } />
         <Route path='*' element={ <NotFound /> } />
       </Routes>
     </div>
@@ -28,6 +29,7 @@ function AuthRoutes() {
       <Routes>
         <Route path='/' element={ <Login /> } />
         <Route path='/home' element= { <Home /> } />
+        <Route path="/goalDetails/:id" element={<GoalDetails />} />
         <Route path='*' element={ <NotFound /> } />
       </Routes>
     </div>
@@ -35,11 +37,11 @@ function AuthRoutes() {
 }
 
 function App() {
-  const authState = useReactiveVar(userData);
+  const { data } = useQuery(IS_LOGGED_IN);
   return (
     <>
-      {authState?.userId && AuthRoutes()}
-      {!authState?.userId && NewUserRoutes()}
+      {data?.isLoggedIn && AuthRoutes()}
+      {!data?.isLoggedIn && NewUserRoutes()}
     </>
   )
 }

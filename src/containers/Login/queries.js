@@ -8,3 +8,11 @@ query($usernameOrEmail: String!, $password: String!) {
       email
     }
   }`;
+
+  export const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+    name @client
+    email @client
+  }
+`;

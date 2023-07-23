@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useApolloClient } from "@apollo/client";
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -12,12 +12,10 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
 import Logo from '../../assets/Logo.jpg';
-import { LOGIN_USER } from './queries';
-import { userData } from '../../utils/cacheStore';
+import { LOGIN_USER, IS_LOGGED_IN } from './queries';
 
 
-function Login() {
-
+function Login(props) {
   const [emailOrUserName, setEmailOrUserName] = useState();
   const [emailOrUserNameError, setEmailOrUserNameError] = useState();
   const [password, setPassword] = useState();
@@ -26,7 +24,7 @@ function Login() {
     variables: { usernameOrEmail: emailOrUserName, password: password },
   });
   const navigate = useNavigate();
-
+  const client = useApolloClient();
   const handleChange = (e) => {
     e.preventDefault();
     const value = e.target.value;
@@ -44,13 +42,20 @@ function Login() {
   useEffect(() => {
     if (data && !loading && !error) {
       if (data?.login?.userId) {
-        userData({ name: data?.login?.name, userId: data?.login?.userId, email: data?.login?.email });
+        client.writeQuery({
+          query: IS_LOGGED_IN,
+          data: {
+            isLoggedIn: !!localStorage.getItem("token"),
+            name: data?.login?.name,
+            email: data?.login?.email
+          },
+        })
         navigate('/home');
       }
     } else if (error && !loading) {
       setEmailOrUserNameError(error.message);
     }
-  }, [loading, error, data, navigate])
+  }, [loading, error, data, navigate, client])
 
   const handleLogin = async(e) => {
     e.preventDefault();

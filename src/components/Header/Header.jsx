@@ -12,18 +12,20 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useReactiveVar } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import MiniLogo from '../../assets/MiniLogo.jpg';
-import { userData } from '../../utils/cacheStore';
 import './Header.css';
+import { IS_LOGGED_IN } from '../../containers/Login/queries';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Products', 'About', 'How to use this app'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const authState = useReactiveVar(userData);
+  const [userName, setUserName] = React.useState('');
+  const client = useApolloClient();
+  const { data } = useQuery(IS_LOGGED_IN);
   const navigate = useNavigate();
   
   const handleOpenNavMenu = event => {
@@ -41,13 +43,18 @@ function Header() {
     setAnchorElUser(null);
     if (e.target.innerHTML === 'Logout') {
       localStorage.removeItem('token');
-      userData({});
+      localStorage.removeItem('apollo-cache-persist');
+      client.resetStore();
       navigate('/login');
     }
   };
 
+  React.useEffect(() => {
+    setUserName(data?.name);
+  }, [data])
+
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ background: '#242464'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img src={MiniLogo} alt="Logo" className='logo'/>
@@ -119,7 +126,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={authState?.name} src="/static/images/avatar/2.jpg" />
+                <Avatar alt={userName?.length && userName[0]} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
