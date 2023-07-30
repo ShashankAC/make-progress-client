@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Box  from '@mui/material/Box';
 import { red } from '@mui/material/colors';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Menu, MenuItem, Button, FormControl, Collapse, TextField, } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
 import SubGoal from '../SubGoal/SubGoal';
-import { Menu, MenuItem } from '@mui/material';
+import CustomModal from '../CustomModal';
+import CustomDatePicker from '../Datepicker/Datepicker';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -34,6 +34,8 @@ export default function Goal(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [expanded, setExpanded] = React.useState(false);
+  const [openSubGoalModal, setOpenSubgoalModal] = React.useState(false);
+  const [startDate, setStartDate] = React.useState();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,6 +49,103 @@ export default function Goal(props) {
     setAnchorEl(null);
   }
 
+  const handleNewSubgoal = () => {
+    setOpenSubgoalModal(!openSubGoalModal);
+  }
+
+  const handleSubGoalChange = (e) => {
+    e.preventDefault();
+  }
+
+  const submitSubgoal = (e) => {
+    e.preventDefault();
+  }
+
+  const subGoalBody = (
+    <Box>
+      <FormControl>
+        <Box
+          display="flex"
+          flexDirection="column"
+          margin="10px"
+        >
+          <TextField
+            id="goalTitle"
+            name="title"
+            label="Goal name"
+            variant="outlined"
+            type="text"
+            sx={{ mb: 3 }}
+            onChange={handleSubGoalChange}
+          />
+          <TextField
+            id="goalDescription"
+            name="description"
+            label="Describe your goal"
+            variant="outlined"
+            type="text"
+            multiline
+            sx={{ mb: 3 }}
+            maxRows={2}
+            onChange={handleSubGoalChange}
+          />
+          <TextField
+            id="goalCategory"
+            name="category"
+            label="Category"
+            variant="outlined"
+            select
+            sx={{ mb: 3 }}
+            onChange={handleSubGoalChange}
+          >
+            {['Very easy', 'Easy', 'Moderate', 'Hard', 'Very hard'].map((ele) => (
+              <MenuItem key={ele} value={ele}>{ele}</MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="goalStatus"
+            name="status"
+            label="Status"
+            variant="outlined"
+            select
+            sx={{ mb: 3 }}
+            onChange={handleSubGoalChange}
+          >
+            {['Yet to start', 'Started', 'In progress', 'Finished', 'On hold'].map((ele) => (
+              <MenuItem key={ele} value={ele}>{ele}</MenuItem>
+            ))}
+          </TextField>
+          <CustomDatePicker
+            value={startDate}
+            label="Start date"
+            handleDateChange={handleSubGoalChange}
+            sx={{ width: '100%' }}
+          />
+        </Box>
+      </FormControl>
+      <Box
+          display="flex"
+          justifyContent="space-evenly"
+          padding="10px"
+          borderTop="2px solid #242464"
+          width="100%"
+        >
+          <Button
+            variant="contained"
+            sx={{ bgcolor: '#242464' }}
+            onClick={submitSubgoal}
+          >
+            Add Subgoal
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleNewSubgoal}
+          >
+            Cancel
+          </Button>
+      </Box>
+    </Box>
+  );
 
   return (
     <Card 
@@ -86,9 +185,31 @@ export default function Goal(props) {
                 horizontal: 'left',
               }}
             >
-              <MenuItem onClick={handleMenuClose}><Link to={`/goalDetails/${props.goalId}`}><Button>Details</Button></Link></MenuItem>
-              <MenuItem onClick={handleMenuClose}><Button>Delete</Button></MenuItem>
-              <MenuItem onClick={handleMenuClose}><Button>Hold</Button></MenuItem>
+              <MenuItem
+                onClick={handleMenuClose}
+              >
+                <Link
+                  to={`/goalDetails/${props.goalId}`}
+                >
+                  <Button>
+                    Edit Goal
+                  </Button>
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={handleNewSubgoal}
+              >
+                <Button>
+                  Add Subgoal
+                </Button>
+              </MenuItem>
+              <MenuItem
+                onClick={handleMenuClose}
+              >
+                <Button>
+                  Delete Goal
+                </Button>
+              </MenuItem>
             </Menu>
           </>
         }
@@ -102,7 +223,7 @@ export default function Goal(props) {
         sx={{ mt: "0px", mb: '0px', minHeight: '100px' }}
       />
       <Box margin="5px">
-        <Typography>Progress {props.progress}%</Typography>
+        <Typography>{props.status} {props.progress}%</Typography>
         <LinearProgress variant="determinate" value={props.progress} />
       </Box>
       {props.image &&
@@ -121,7 +242,7 @@ export default function Goal(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing sx={{ mt: "auto", paddingBottom: '0px' }}>
-        <Link to={`/goalDetails/${props.goalId}`}><Button onClick={handleExpandClick}>Details</Button></Link>
+        <Button onClick={handleExpandClick}>Subgoals</Button>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -136,16 +257,31 @@ export default function Goal(props) {
           {props.subGoals.map((subGoal) => (
             <SubGoal
               key={subGoal.subGoalId}
-              title={subGoal.title}
-              description={subGoal.description}
-              progress={subGoal.progress}
-              status={subGoal.status}
-              category={subGoal.category}
-              startDate={subGoal.startDate}
+              {...subGoal}
             />
           ))}
+          <Button
+            sx={{
+              height: 'fit-content',
+              marginTop: '5px',
+              marginBottom: 'auto',
+              padding: '5px',
+              width: '150px',
+              background: '#242464',
+            }}
+            variant="contained"
+            onClick={handleNewSubgoal}
+          >Add Subgoal</Button>
         </CardContent>
       </Collapse>
+      {openSubGoalModal &&
+        <CustomModal
+          heading="Add Subgoal"
+          openModal={openSubGoalModal}
+          handleClose={handleNewSubgoal}
+          body={subGoalBody}
+        />
+      }
     </Card>
   );
 }

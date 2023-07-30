@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import Box from "@mui/material/Box";
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import { Button, FormGroup, FormControlLabel, MenuItem, FormControl, Checkbox, Collapse } from "@mui/material";
+import { Button, MenuItem, FormControl, Collapse } from "@mui/material";
 import Goal from "../../components/Goal";
 import AttentionContent from "../../components/AttentionContent";
 import CustomDatePicker from "../../components/Datepicker/Datepicker";
@@ -38,10 +38,10 @@ function Home() {
         goalId: 1,
         title: 'Build and deploy an goal management app',
         category: 'Very Hard',
-        description: 'Build an application end-to-end from scratch and deploy it for use.',
+        description: 'Build an application end-to-end from scratch and deploy it for personal use.',
         priority: 1,
-        startDate: 'Jul 16 2023',
-        endDate: 'Jul 16 2023',
+        startDate: 'May 2 2023',
+        endDate: 'May 2 2025',
         progress: 15,
         status: 'In progress',
         image: 'https://cdn.pixabay.com/photo/2016/03/08/20/03/flag-1244648_1280.jpg',
@@ -50,16 +50,25 @@ function Home() {
             subGoalId: 1,
             title: 'Frontend React JS',
             progress: 5,
+            status: 'In progress',
           },
           {
             subGoalId: 2,
-            title: 'Backend Node Express',
-            progress: 15,
+            title: 'Postgresql database design',
+            progress: 5,
+            status: 'In progress',
           },
           {
             subGoalId: 3,
+            title: 'Backend Node Express',
+            progress: 15,
+            status: 'In progress',
+          },
+          {
+            subGoalId: 4,
             title: 'AWS',
-            progress: 25,
+            progress: 1,
+            status: 'In progress',
           }
         ]
       },
@@ -67,28 +76,31 @@ function Home() {
         goalId: 2,
         title: 'Learn Springboot framework',
         category: 'Hard',
-        description: 'Learn Java Springboot to become a fullstack web-developer',
+        description: 'Learn Java Springboot to become a backend web-developer',
         priority: 2,
         startDate: 'Jul 16 2023',
-        endDate: 'Jul 16 2023',
+        endDate: 'Jul 16 2024',
         progress: 5,
         status: 'In progress',
         subGoals: [
           {
-            subGoalId: 4,
+            subGoalId: 5,
             title: 'Learn Java 17',
             progress: 5,
+            status: 'In progress',
           },
           {
-            subGoalId: 5, 
-            title: 'Learn Java Spring concepts',
+            subGoalId: 6, 
+            title: 'Learn Java Spring concepts.',
             progress: 15,
+            status: 'Not started',
           },
           {
-            subGoalId: 6,
-            title: 'Learn and build a Springboot project',
+            subGoalId: 7,
+            title: 'Build a Springboot backend server for the goal management app.',
             progress: 25,
-          }
+            status: 'Not started',
+          },
         ]
       },
       {
@@ -97,28 +109,134 @@ function Home() {
         category: 'Easy',
         description: 'Add 5 books at a time and start reading them one by one',
         priority: 3,
-        startDate: 'Jul 16 2023',
-        endDate: 'Jul 16 2023',
+        startDate: 'Jul 30 2023',
+        endDate: 'Jul 30 2024',
         progress: 5,
         status: 'In progress',
         subGoals: [
           {
-            subGoalId: 7,
-            title: 'The Undiscovered Self',
-            progress: 5,
-          },
-          {
             subGoalId: 8,
-            title: 'The Stranger',
-            progress: 15,
+            title: 'The Undiscovered Self',
+            progress: 100,
+            status: 'Done'
           },
           {
             subGoalId: 9,
+            title: 'The Stranger',
+            progress: 100,
+            status: 'Done'
+          },
+          {
+            subGoalId: 10,
             title: 'Essays and Aphorisms',
-            progress: 25,
-          }
+            progress: 50,
+            status: 'In progress',
+          },
+          {
+            subGoalId: 11,
+            title: 'Psychology of Self Deception',
+            progress: 0,
+            status: 'Not started',
+          },
+          {
+            subGoalId: 12,
+            title: 'The Meditations',
+            progress: 0,
+            status: 'Not started',
+          },
+          {
+            subGoalId: 13,
+            title: 'The Brothers Karamazov',
+            progress: 0,
+            status: 'Not started',
+          },
+          {
+            subGoalId: 14,
+            title: 'Epictetus',
+            progress: 0,
+            status: 'Not started',
+          },
+          {
+            subGoalId: 15,
+            title: 'Letters from a Stoic',
+            progress: 0,
+            status: 'Not started',
+          },
+          {
+            subGoalId: 16,
+            title: 'The Origin of Species',
+            progress: 0,
+            status: 'Not started',
+          },
         ]
       },
+      {
+        goalId: 4,
+        title: 'Build an autonomous wheeled robot',
+        category: 'Hard',
+        description: 'Build an autonomous wheeled robot using Aruduino UNO R3, L293D motor shield, IR and Ultrasound sensors and 3v DC motors.',
+        priority: 3,
+        startDate: 'May 22 2023',
+        endDate: 'May 22 2024',
+        progress: 5,
+        status: 'In progress',
+        subGoals: [
+          {
+            subGoalId: 17,
+            title: 'Figure out IR sensor programming.',
+            progress: 0,
+            status: 'In progress'
+          },
+          {
+            subGoalId: 18,
+            title: 'Figure out IR sensor integration with Arduino and motor shield.',
+            progress: 0,
+            status: 'Not started'
+          },
+          {
+            subGoalId: 19,
+            title: 'Revision of Ultrasound sensor programming.',
+            progress: 0,
+            status: 'Not started'
+          },
+          {
+            subGoalId: 20,
+            title: 'Figure out of Ultrasound sensor integration with Arduino and motor-shield.',
+            progress: 0,
+            status: 'Not started'
+          },
+          {
+            subGoalId: 21,
+            title: 'Figure out how to control the DC motors with Arduino and motor-shield.',
+            progress: 0,
+            status: 'Not started'
+          },
+          {
+            subGoalId: 22,
+            title: 'Figure out of to control the DC motors with Arduino and motor-shield using sensor feedback.',
+            progress: 0,
+            status: 'Not started'
+          },
+          {
+            subGoalId: 23,
+            title: 'Explore the feasiblity of integrating remote control.',
+            progress: 0,
+            status: 'Not started'
+          },
+        ],
+      },
+      {
+        goalId: 5,
+        title: 'Build a 4 legged robot.',
+        category: 'Hard',
+        description: 'Build a 4 legged robot.',
+        priority: 3,
+        startDate: '',
+        endDate: '',
+        progress: 5,
+        status: 'Just thinking about it',
+        subGoals: []
+      }
     ]
   }
 
@@ -140,17 +258,17 @@ function Home() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <Typography variant="h4" margin="10px">Set a new goal</Typography>
-      <FormControl sx={{ width: '100%' }}>
+      <FormControl>
         <Box
           display="flex"
-          width="100%"
+          width="90%"
           alignItems="start"
           sx={{
-            '& .MuiTextField-root': { width: '95%' },
+            '& .MuiTextField-root': { width: '90%' },
             '.MuiFormLabel-root': { ml: 1 },
             '.MuiInputBase-root': {  ml: 1 },
             '@media (max-width: 414px)': {
@@ -180,7 +298,7 @@ function Home() {
             <TextField
               id="goalDescription"
               name="description"
-              label="Description"
+              label="Describe your goal"
               variant="outlined"
               type="text"
               multiline
@@ -243,7 +361,7 @@ function Home() {
               sx={{ width: '93.5%', mb: 3 }}
               onChange={handleGoalChange}
             >
-              {['Yet to start', 'Started', 'In progress', 'Finished', 'On hold'].map((ele) => (
+              {['Not started', 'In progress', 'Done', 'On hold', 'Cancelled'].map((ele) => (
                 <MenuItem key={ele} value={ele}>{ele}</MenuItem>
               ))}
             </TextField>
@@ -272,7 +390,6 @@ function Home() {
           </Box>
         </Box>
         <Typography variant="p" color="#242464" margin="10px">* It is recommended to add subgoals to large and complex goals.</Typography>
-        <FormControlLabel control={<Checkbox onChange={handleSubGoalCheck} checked={addSubGoal} />} label="Add sub-goals" />
       </FormControl>
       <Box
         display="flex"
@@ -311,7 +428,11 @@ function Home() {
           width="100%"
         >
           {goals.goals.length > 0 && <Typography variant="h4" gutterBottom>Your Goals</Typography>}
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Collapse
+            in={expanded}
+            timeout="auto"
+            unmountOnExit
+          >
             {goalSettingBody}
           </Collapse>
         </Box>
@@ -348,7 +469,8 @@ function Home() {
         <AttentionContent
           heading="Set your goals"
           body={
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" paragraph gutterBottom>
+              If your goals don't scare you, they are not big enough.
               Don't worry if your goals are big, just take one step at a time!
             </Typography>
             }
@@ -361,17 +483,7 @@ function Home() {
           return (
             <Goal
               key={goal.goalId}
-              goalId={goal.goalId}
-              title={goal.title}
-              description={goal.description}
-              category={goal.category}
-              priority={goal.priority}
-              startDate={goal.startDate}
-              endDate={goal.endDate}
-              progress={goal.progress}
-              status={goal.status}
-              image={goal.image}
-              subGoals={goal.subGoals}
+              {...goal}
             />
           )
         })}
