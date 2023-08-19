@@ -75,7 +75,7 @@ function SubGoal(props) {
             </MenuItem>
           </Menu>
       </Box>
-      <Typography>{props.status} {props.progress}%</Typography>
+      <Typography>{props.status} {props.progress} {props.progressText}</Typography>
       <LinearProgress variant="determinate" value={props.progress} />
     </Box>
   )

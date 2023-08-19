@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import Header from './components/Header/Header';
+import Header from './components/Header';
 import Login from './containers/Login';
 import SignUp from './containers/SignUp';
 import Home from './containers/Home';

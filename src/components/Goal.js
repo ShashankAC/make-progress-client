@@ -10,14 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Box  from '@mui/material/Box';
 import { red } from '@mui/material/colors';
-import LinearProgress from '@mui/material/LinearProgress';
 import { Menu, MenuItem, Button, FormControl, Collapse, TextField, } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
-import SubGoal from '../SubGoal/SubGoal';
-import CustomModal from '../CustomModal';
-import CustomDatePicker from '../Datepicker/Datepicker';
+import SubGoal from './SubGoal';
+import CustomModal from './CustomModal';
+import CustomDatePicker from './Datepicker';
+import CustomLinearProgress from './CustomLinearProgress';
+import * as Constants from '../utils/constants';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -98,7 +99,7 @@ export default function Goal(props) {
             sx={{ mb: 3 }}
             onChange={handleSubGoalChange}
           >
-            {['Very easy', 'Easy', 'Moderate', 'Hard', 'Very hard'].map((ele) => (
+            {[Constants.CATEGORY_SERIOUS, Constants.CATEGORY_EXPERIMENTAL, Constants.CATEGORY_HOBBY].map((ele) => (
               <MenuItem key={ele} value={ele}>{ele}</MenuItem>
             ))}
           </TextField>
@@ -111,7 +112,7 @@ export default function Goal(props) {
             sx={{ mb: 3 }}
             onChange={handleSubGoalChange}
           >
-            {['Yet to start', 'Started', 'In progress', 'Finished', 'On hold'].map((ele) => (
+            {[Constants.STATUS_NOT_STARTED, Constants.STATUS_IN_PROGRESS, Constants.STATUS_DONE, Constants.STATUS_ON_HOLD].map((ele) => (
               <MenuItem key={ele} value={ele}>{ele}</MenuItem>
             ))}
           </TextField>
@@ -152,6 +153,7 @@ export default function Goal(props) {
       sx={{
         maxWidth: 320,
         minWidth: 320,
+        minHeight: "294.04px",
         margin: '5px',
         height: "100%",
         display: "flex",
@@ -223,8 +225,12 @@ export default function Goal(props) {
         sx={{ mt: "0px", mb: '0px', minHeight: '100px' }}
       />
       <Box margin="5px">
-        <Typography>{props.status} {props.progress}%</Typography>
-        <LinearProgress variant="determinate" value={props.progress} />
+        <Typography>{props.status} {props.progress} {props.progressText}</Typography>
+        <CustomLinearProgress
+          variant="determinate"
+          value={props.progress}
+          status={props.status}
+        />
       </Box>
       {props.image &&
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -237,7 +243,18 @@ export default function Goal(props) {
         </Collapse>
       }
       <CardContent sx={{ paddingBottom: '0px', minHeight: '56.03px' }}>
-        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '0px' }} paragraph>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: '-webkit-box',
+            overflow: 'hidden',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+            marginBottom: '0px'
+          }}
+          paragraph
+        >
           {props.description}
         </Typography>
       </CardContent>

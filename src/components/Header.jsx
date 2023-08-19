@@ -13,9 +13,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useApolloClient, useQuery } from "@apollo/client";
-import MiniLogo from '../../assets/MiniLogo.jpg';
-import './Header.css';
-import { IS_LOGGED_IN } from '../../containers/Login/queries';
+import MiniLogo from '../assets/MiniLogo.jpg';
+import { IS_LOGGED_IN } from '../containers/Login/queries';
 
 const pages = ['Products', 'About', 'How to use this app'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -54,10 +53,17 @@ function Header() {
   }, [data])
 
   return (
-    <AppBar position="static" sx={{ background: '#242464'}}>
+    <AppBar position="fixed" sx={{ background: '#242464'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img src={MiniLogo} alt="Logo" className='logo'/>
+          <img
+            src={MiniLogo}
+            alt="Logo"
+            style={{
+              margin: '5px',
+              height: '65px',
+              width: '65px',
+          }} />
           <Typography
             variant="h6"
             noWrap
